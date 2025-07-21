@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const session = require("express-session");
 const passport = require("passport");
+const MongoStore = require("connect-mongo");
+
 
 const propertyRoute = require("./routes/propertyRoute"); // adjust the path if needed
 const globalErrorHandler = require("./controller/errorController");
@@ -35,9 +37,16 @@ app.use((req, res, next) => {
 
 app.use(
   session({
-    secret: "mu-session-secert",
+    secret: "my-session-secert",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URL, // your MongoDB connection string
+      collectionName: "sessions",
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
   })
 );
 
