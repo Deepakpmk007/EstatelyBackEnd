@@ -5,7 +5,10 @@ const morgan = require("morgan");
 const session = require("express-session");
 const passport = require("passport");
 const MongoStore = require("connect-mongo");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a80175 (add connect-mongo)
 
 const propertyRoute = require("./routes/propertyRoute"); // adjust the path if needed
 const globalErrorHandler = require("./controller/errorController");
