@@ -28,39 +28,39 @@ passport.use(
   )
 );
 
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
-      passReqToCallback: true,
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        const existingUser = await User.findOne({ googleId: profile.id });
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.GOOGLE_CLIENT_ID,
+//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//       callbackURL: "/auth/google/callback",
+//       passReqToCallback: true,
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       try {
+//         const existingUser = await User.findOne({ googleId: profile.id });
 
-        if (existingUser) {
-          return done(null, existingUser);
-        }
+//         if (existingUser) {
+//           return done(null, existingUser);
+//         }
 
-        const newUser = await User.create({
-          googleId: profile.id || null,
-          userName: profile.displayName || "Google User",
-          email: profile.emails[0].value || "no-email@gmail.com",
-          password: "google-auth",
-        });
+//         const newUser = await User.create({
+//           googleId: profile.id || null,
+//           userName: profile.displayName || "Google User",
+//           email: profile.emails[0].value || "no-email@gmail.com",
+//           password: "google-auth",
+//         });
 
-        return done(null, newUser);
-      } catch (error) {
-        return new AppError(
-          "Error creating user with Google authentication",
-          500
-        );
-      }
-    }
-  )
-);
+//         return done(null, newUser);
+//       } catch (error) {
+//         return new AppError(
+//           "Error creating user with Google authentication",
+//           500
+//         );
+//       }
+//     }
+//   )
+// );
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
